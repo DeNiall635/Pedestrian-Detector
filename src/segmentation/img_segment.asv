@@ -1,0 +1,7 @@
+imTest = imread('training/pos_grayscale/gray_img00000.jpg');
+imMean = mean(imTest(:));
+imSd = std(imTest(
+
+subplot(2,3,1), imshow(imTest), title('original');
+subplot(2,3,4), histogram(imTest), title('histogram');
+

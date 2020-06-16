@@ -1,0 +1,43 @@
+%This script will take the video created in pedImg2Vid
+pedestrianObj = VideoReader(strcat(testDir,'pedColVid.avi'));
+pedestrianFrames = read(pedestrianObj);
+
+%Struggling to find a suitable background
+Bkg = pedestrianFrames(:,:,:,100);
+BkgGray = rgb2gray(Bkg);
+pedGrayVid = VideoWriter(strcat(testDir,'pedGrayVid.avi'));
+
+open(pedGrayVid);
+MAP=colormap(gray(256));
+
+threshold = 80;
+
+%fullscreen before for loop starts
+figure('units','normalized','outerposition',[0 0 1 1])
+ 
+for t = 1:100
+    
+%     frame by frame
+    currentFrame = pedestrianFrames(:,:,:,t);
+    subplot(1,3,1), imshow(currentFrame), title(['Frame: ',num2str(t),'/100'])
+    
+    currentFrameGray = rgb2gray(currentFrame);
+    subplot(1,3,2), imshow(currentFrameGray), title(['Frame: ',num2str(t),'/100'])
+       
+    
+%      helping identify the black car
+    BkgGray = double(BkgGray);
+    currentFrameGray = double(currentFrameGray);
+    
+%     background subtraction to get blobs
+    Blobs=abs(currentFrameGray - BkgGray) > threshold;
+    subplot(1,3,3), imshow(Blobs), title('Blobs'), colormap(gray)
+    
+%     saving the video
+    frame = im2frame(uint8(currentFrameGray), MAP);
+    writeVideo(pedGrayVid,frame);
+    
+    pause(0.01)
+  
+end
+close(pedGrayVid);

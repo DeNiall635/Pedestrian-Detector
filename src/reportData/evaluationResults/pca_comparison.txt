@@ -1,0 +1,3 @@
+Use PCA?,Accuracy,Computation Time
+NO,0.901333333333333,42.9260995
+YES,0.892,7.6451169
